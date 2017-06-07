@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TreehouseDefense
-{
-    class MapLocation : Point
+namespace TreehouseDefense {
+    class MapLocation : Point //[2]
     {
-        public MapLocation(int x, int y, Map map) : base(x, y)
+        public MapLocation(int x, int y, Map map) : base(x, y) //[3]
         {
-            if (!map.OnMap(this))
+            if (!map.OnMap(this)) //[1]
             {
-                throw new System.Exception();
+                //throw new System.Exception();
+                throw new OutOfBoundsException(x + ", " + y + " is outside the boundries of the map.");
             }
+        }
+
+        public bool InRangeOf(MapLocation location, int range) {
+            return DistanceTo(location) <= range;
         }
     }
 }

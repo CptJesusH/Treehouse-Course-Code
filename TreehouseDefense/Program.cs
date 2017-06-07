@@ -1,41 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System; // Using system so we can use Console.WriteLine later in this code. 
 
-namespace TreehouseDefense
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
+namespace TreehouseDefense {
+    class Game {
+        public static void Main() {
+            Map map = new Map(8, 5);
+
+            try //[6]
             {
-                Map map = new Map(8, 5);
+                Path path = new Path(
+                    new[] {
+                        new MapLocation(0, 2, map),
+                        new MapLocation(1, 2, map),
+                        new MapLocation(2, 2, map),
+                        new MapLocation(3, 2, map),
+                        new MapLocation(4, 2, map),
+                        new MapLocation(5, 2, map),
+                        new MapLocation(6, 2, map),
+                        new MapLocation(7, 2, map),
+                    }
+                );
 
-                //map.Width = 8; //[1]
-                //map.Height = 5; //[1]
+                Invader[] invaders =
+                {
+                    new Invader(path),
+                    new Invader(path),
+                    new Invader(path),
+                    new Invader(path)
+                };
 
-                //Point point /*[3]*/= new Point(4, 2); //[2]
-                Point x = new MapLocation(4, 2); //[5.1]
-                Point p = x; //[5.2]
-                map.OnMap(new MapLocation(0, 0)); //[5.3]
-                Console.WriteLine(x.DistanceTo(5, 5)); //[5.4]
-                //bool isOnMap = map.OnMap(point); //[2][3]
-                //Console.WriteLine(isOnMap);
-                //int area = map.Width * map.Height; //[2]
+                Tower[] towers = {
+                    new Tower(new MapLocation(1, 3, map)),
+                    new Tower(new MapLocation(3, 3, map)),
+                    new Tower(new MapLocation(5, 3, map))
+                };
 
-                //Console.WriteLine(point.DistanceTo(5, 3)); //[4]
-                //Console.WriteLine(x.DistanceTo(5, 3)); //[5.5]
-                Console.WriteLine(x is MapLocation); //[5.6]
-                Console.WriteLine(x is Point); //[5.7]
+                Level level = new Level(invaders) {
+                    Towers = towers
+                };
 
-                Point point = new Point(0, 0); //[5.8]
-                Console.WriteLine(point is MapLocation); //[5.9]
+                bool playerWon = level.Play();
 
-                //point = new Point(8, 5); //[3]
-                //isOnMap = map.OnMap(point); //[3]
-                //Console.WriteLine(isOnMap);
+                Console.WriteLine("Player " + (playerWon ? "won" : "lost"));
+            }
+            catch (OutOfBoundsException ex) {
+                Console.WriteLine(ex.Message);
+            }
+            catch (TreehouseDefenseException) {
+                Console.WriteLine("Unhandled TreeHouseDefenseException");
+            }
+            catch (Exception ex) {
+                Console.WriteLine("Unhandled Exception: " + ex);
             }
         }
     }
