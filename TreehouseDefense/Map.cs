@@ -10,9 +10,8 @@
 
         public bool OnMap(Point point) // [1]
         {
-            return point.X >= 0 && point.X < Width && point.Y >= 0 && point.Y < Height;
-
-            //return inBounds; [2]
+            return point.X >= 0 && point.X < Width && 
+                   point.Y >= 0 && point.Y < Height;
         }
     }
 }
